@@ -1,17 +1,14 @@
 WITH RECURSIVE g AS (
-    SELECT id, parent_id, 1 AS generation
+    SELECT ID, PARENT_ID, 1 AS GENERATION
     FROM ECOLI_DATA
-    WHERE parent_id IS NULL
-
+    WHERE PARENT_ID IS NULL
+    
     UNION ALL
-
-    SELECT e.id, e.parent_id, g.generation + 1
-    FROM ECOLI_DATA e
-    JOIN g ON e.parent_id = g.id
+    SELECT e.ID, e.PARENT_ID, GENERATION + 1 AS GENERATION
+    FROM ECOLI_DATA e JOIN g ON g.ID = e.PARENT_ID
 )
-SELECT COUNT(*) AS count, generation
-FROM g
-LEFT JOIN ECOLI_DATA child ON child.parent_id = g.id
-WHERE child.id IS NULL
-GROUP BY generation
-ORDER BY generation;
+SELECT COUNT(1) AS COUNT, GENERATION
+FROM g LEFT JOIN ECOLI_DATA e ON g.ID = e.PARENT_ID
+WHERE e.ID IS NULL
+GROUP BY GENERATION
+ORDER BY GENERATION
